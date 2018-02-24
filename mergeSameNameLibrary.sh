@@ -90,6 +90,6 @@ do
 done
 
 echo "lipo $objsPath -create -output $outputPath/$outputFile"
-`lipo $objsPath -create -output $outputPath/$outputFile`
+#`lipo $objsPath -create -output $outputPath/$outputFile`
 
-cp $outputPath/$outputFile /Users/mac/work/HN-Nniu/HN-Nniu/HN-Nniu/LaunchServices/Yunxin/NIMKit/Vendors/NIMSDK/Libs/
+#cp $outputPath/$outputFile /Users/mac/work/HN-Nniu/HN-Nniu/HN-Nniu/LaunchServices/Yunxin/NIMKit/Vendors/NIMSDK/Libs/
