@@ -4,10 +4,6 @@ import plistlib
 import sys
 import os
 import shutil
-import zipfile
-#import deb_pkg_tools
-#from deb_pkg_tools import package
-#import fakechroot
 
 infoPlistPath = ""
 applicationPath = ""
@@ -86,22 +82,11 @@ def parseIPA(filePath):
 
     shutil.copyfile(filePath, tmpPath + "/tmp.zip")
 
-    #中文乱码问题
-    zip_ref = zipfile.ZipFile(tmpPath + "/tmp.zip", 'r')
-    with zipfile.ZipFile(tmpPath + "/tmp.zip", 'r') as zip_ref:
-        for name in zip_ref.namelist():
-            utf8name = name.encode('cp437').decode()
-            utf8name = tmpPath + "/" + utf8name
-            pathname = os.path.dirname(utf8name)
-            if not os.path.exists(pathname) and pathname != "":
-                os.makedirs(pathname)
-            data = zip_ref.read(name)
-            if not os.path.exists(utf8name):
-                fo = open(utf8name, "wb+")
-                fo.write(data)
-                fo.close
-        zip_ref.close()
-        
+    #python解压后，程序不能执行，通过shell解压
+    os.chdir(tmpPath)
+    cmd = 'unzip tmp.zip'
+    os.system(cmd)
+    os.chdir('..')
     Payload = tmpPath + "/Payload"
 
     global applicationPath
