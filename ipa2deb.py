@@ -4,6 +4,7 @@ import plistlib
 import sys
 import os
 import shutil
+import re
 
 infoPlistPath = ""
 applicationPath = ""
@@ -109,8 +110,21 @@ def updateJailbreakSource(debFile):
         os.remove('Packages.bz2')
 
     #Packages Filename路径可能要修改，服务器根路径的相对路径
-    cmd = 'dpkg-scanpackages test1.deb > Packages && bzip2 Packages -k'
+    cmd = 'dpkg-scanpackages test1.deb > Packages'
     os.system(cmd)
+
+    #服务器路径替换
+    f = open('Packages', 'r')
+    alllines = f.readlines()
+    f.close()
+    f = open('Packages', 'w+')
+    for eachline in alllines:
+        a = re.sub(jailbreakPath, '', eachline)
+        f.writelines(a)
+    f.close()
+
+    cmd = 'bzip2 Packages -k' 
+    os.system(cmd) 
 
 
 def entry():
