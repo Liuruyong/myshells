@@ -8,6 +8,7 @@ import re
 
 infoPlistPath = ""
 applicationPath = ""
+appname = ""
 
 jailbreakPath = "/Users/liu/work/source"
 
@@ -15,6 +16,7 @@ jailbreakPath = "/Users/liu/work/source"
 def getInfoFromPlist(filePath):
     fp = open(filePath, 'rb')
     dic = plistlib.load(fp, fmt=None)
+    global appname
     appname = dic["CFBundleDisplayName"]
     bundleid = dic["CFBundleIdentifier"]
     appversion = dic["CFBundleShortVersionString"]
@@ -60,15 +62,16 @@ def creatDeb():
     shutil.move(applicationPath,path + "/Applications")
 
     #生成deb包
-    if os.path.exists('test.deb'):
-        os.remove('test.deb')
+    if os.path.exists('tmp.deb'):
+        os.remove('tmp.deb')
 
     #package.build_package(path,'test.deb',check_package=False)
-    shellcmd = 'dpkg-deb -b ' + path + ' test.deb'
+    shellcmd = 'dpkg-deb -b ' + path + ' tmp.deb'
     os.system(shellcmd) 
-#    shutil.rmtree(path)
+    shutil.rmtree(path)
 
-    updateJailbreakSource("test.deb")
+    global appname
+    updateJailbreakSource("tmp.deb",appname)
 
 #解析ipa
 def parseIPA(filePath):
@@ -102,15 +105,20 @@ def parseIPA(filePath):
     shutil.rmtree(tmpPath)
 
 #更新越狱源
-def updateJailbreakSource(debFile):
+def updateJailbreakSource(debFile,appname):
     os.chdir(jailbreakPath)
-    shutil.move(debFile, "test1.deb")
+    targetFile = appname + ".deb"
+
+    if os.path.exists(targetFile):
+        os.remove(targetFile)
 
     if os.path.exists('Packages.bz2'):
         os.remove('Packages.bz2')
 
+    shutil.move(debFile, targetFile)
+
     #Packages Filename路径可能要修改，服务器根路径的相对路径
-    cmd = 'dpkg-scanpackages test1.deb > Packages'
+    cmd = 'dpkg-scanpackages -m -t deb . > Packages'
     os.system(cmd)
 
     #服务器路径替换
