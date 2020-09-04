@@ -11,7 +11,7 @@
                     <key>kind</key>
                     <string>software-package</string>
                     <key>url</key>
-                    <string>http://192.168.1.102:9595/job/%E5%BE%AE%E5%B0%8F%E8%AF%B4_1.0.3/5/artifact/build/%E5%BE%AE%E5%B0%8F%E8%AF%B4.ipa</string>
+                    <string>https://github.com/Liuruyong/resource/blob/master/%E5%BE%AE%E5%B0%8F%E8%AF%B4.ipa</string>
                 </dict>
             </array>
             <key>metadata</key>
